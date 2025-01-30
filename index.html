@@ -108,6 +108,20 @@
     margin-top: 20px;
     color: yellow;
 }
+      #full-ranking-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 100%;
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    overflow-y: auto;
+    text-align: left;
+}
+
 
     </style>
 </head>
@@ -437,27 +451,33 @@
       document.getElementById("winner-name").innerHTML = `<h2>${nextRound[0].name} ha sido el ganador 🏆</h2>`;
 
 
-        let rankingList = document.getElementById("ranking-list");
-        rankingList.innerHTML = "";
-        rankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
-        rankingList.innerHTML += `<li>🥈 ${ranking[0].name}</li>`;
-        rankingList.innerHTML += `<li>🥉 ${ranking[1].name}</li>`;
+       let fullRankingList = document.getElementById("full-ranking-list");
+fullRankingList.innerHTML = "";
+fullRankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
+fullRankingList.innerHTML += `<li>🥈 ${ranking[0].name}</li>`;
+fullRankingList.innerHTML += `<li>🥉 ${ranking[1].name}</li>`;
 
-        let rankPositions = ["4", "5-8", "9-16", "17-32", "33-64", "65-128"];
-        let positionIndex = 1;
-        let currentGroupSize = 4;
+let rankPositions = ["4", "5-8", "9-16", "17-32", "33-64", "65-128"];
+let positionIndex = 0;
+let currentGroupSize = 4;
 
-        eliminatedVideos.reverse().forEach((video, index) => {
-            if (index >= currentGroupSize) {
-                positionIndex++;
-                currentGroupSize *= 2;
-            }
-            rankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
-        });
+eliminatedVideos.reverse().forEach((video, index) => {
+    if (index >= currentGroupSize) {
+        positionIndex++;
+        currentGroupSize *= 2;
+    }
+    fullRankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
+});
 
-        document.getElementById("ranking-container").style.display = "block";
+document.getElementById("full-ranking-container").style.display = "block";
+
     }
     }
 </script>
+<div id="full-ranking-container" class="ranking-container">
+    <h2>Clasificación Completa</h2>
+    <ol id="full-ranking-list"></ol>
+</div>
+
 </body>
 </html>
