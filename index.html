@@ -108,20 +108,39 @@
     margin-top: 20px;
     color: yellow;
 }
-      #full-ranking-container {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 350px;
-    height: 100%;
-    background-color: #222;
-    color: white;
+.winner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
     padding: 20px;
-    overflow-y: auto;
+    border-radius: 10px;
+    width: 50%;
+}
+#winner-message {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 20px;
+    color: yellow;
+    text-align: center;
+}
+.ranking-container {
+    display: block;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 10px 0 0 10px;
     text-align: left;
 }
-
 
     </style>
 </head>
@@ -148,7 +167,7 @@
             { src: "https://www.youtube.com/embed/MkBVsAYUc-g", name: "fairy tail op 21" },
             { src: "https://www.youtube.com/embed/vYXTyz0-wMc", name: "mahi op 1" },
             { src: "https://www.youtube.com/embed/g04QC2Ewnl4", name: "kakegurui op 1" },
-            { src: "https://www.youtube.com/embed/KWg_Hp_CSbA", name: "KamiErabi God.app op 1" },
+            { src: "https://www.youtube.com/watch?v=GuAcdIqcanA", name: "Tengoku Daimakyō op 1" },
             { src: "https://www.youtube.com/embed/FWXkipC-vqs", name: "Ban g dream op 8" },
             { src: "https://www.youtube.com/embed/Ua5UARWRYLA", name: "Domestic no kanojo op 1" },
             { src: "https://www.youtube.com/embed/5emM3JGI5JA", name: "bleach op 13" },
@@ -447,37 +466,33 @@
         document.getElementById("bracket-container").style.display = "none";
         document.getElementById("winner-container").style.display = "block";
         document.getElementById("winner-video").src = nextRound[0].src;
-        document.getElementById("winner-name").innerText = nextRound[0].name;
+        document.getElementById("winner-message").innerHTML = `<h2>${nextRound[0].name} ha sido el ganador 🏆</h2>`;
+
       document.getElementById("winner-name").innerHTML = `<h2>${nextRound[0].name} ha sido el ganador 🏆</h2>`;
 
 
-       let fullRankingList = document.getElementById("full-ranking-list");
-fullRankingList.innerHTML = "";
-fullRankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
-fullRankingList.innerHTML += `<li>🥈 ${ranking[0].name}</li>`;
-fullRankingList.innerHTML += `<li>🥉 ${ranking[1].name}</li>`;
+        let rankingList = document.getElementById("ranking-list");
+        rankingList.innerHTML = "";
+        rankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
+        rankingList.innerHTML += `<li>🥈 ${ranking[0].name}</li>`;
+        rankingList.innerHTML += `<li>🥉 ${ranking[1].name}</li>`;
 
-let rankPositions = ["4", "5-8", "9-16", "17-32", "33-64", "65-128"];
-let positionIndex = 0;
-let currentGroupSize = 4;
+        let rankPositions = ["4", "5-8", "9-16", "17-32", "33-64", "65-128"];
+        let positionIndex = 1;
+        let currentGroupSize = 4;
 
-eliminatedVideos.reverse().forEach((video, index) => {
-    if (index >= currentGroupSize) {
-        positionIndex++;
-        currentGroupSize *= 2;
-    }
-    fullRankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
-});
+        eliminatedVideos.reverse().forEach((video, index) => {
+            if (index >= currentGroupSize) {
+                positionIndex++;
+                currentGroupSize *= 2;
+            }
+            rankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
+        });
 
-document.getElementById("full-ranking-container").style.display = "block";
-
+        document.getElementById("ranking-container").style.display = "block";
     }
     }
 </script>
-<div id="full-ranking-container" class="ranking-container">
-    <h2>Clasificación Completa</h2>
-    <ol id="full-ranking-list"></ol>
-</div>
-
 </body>
 </html>
+
