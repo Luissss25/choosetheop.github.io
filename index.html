@@ -109,7 +109,7 @@
     color: yellow;
 }
 .winner-container {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -121,7 +121,9 @@
     padding: 20px;
     border-radius: 10px;
     width: 50%;
+    text-align: center;
 }
+
 #winner-message {
     font-size: 2em;
     font-weight: bold;
@@ -129,8 +131,9 @@
     color: yellow;
     text-align: center;
 }
+
 .ranking-container {
-    display: block;
+    display: none;
     position: fixed;
     top: 50%;
     right: 0;
@@ -141,6 +144,7 @@
     border-radius: 10px 0 0 10px;
     text-align: left;
 }
+
 
     </style>
 </head>
@@ -296,7 +300,7 @@
         let currentRound = [];
         let nextRound = [];
         let currentMatchIndex = 0;
-        let phaseNames = ["Final", "Semifinales", "Cuartos de Final", "Octavos de Final", "Dieciseisavos de Final", "Treintaidosavos de Final"];
+        let phaseNames = ["Final", "Semifinales", "Cuartos de Final", "Octavos de Final", "Dieciseisavos de Final", "Treintaidosavos de Final", "sesentaicuatroavos de Final"];
 
         function startTournament(size) {
             videos = shuffleArray(videos).slice(0, size);
@@ -369,7 +373,7 @@
                     bracket.shift();
                     showNextMatch();
                 } else {
-                    alert(`Ganador: ${winner.name}`);
+                  showWinner();
                 }
             } else {
                 showNextMatch();
@@ -463,31 +467,32 @@
 
 
     function showWinner() {
-        document.getElementById("bracket-container").style.display = "none";
-        document.getElementById("winner-container").style.display = "block";
-        document.getElementById("winner-video").src = nextRound[0].src;
-        document.getElementById("winner-message").innerHTML = `<h2>${nextRound[0].name} ha sido el ganador 🏆</h2>`;
+    document.getElementById("bracket-container").style.display = "none";
+    document.getElementById("winner-container").style.display = "flex";
+    document.getElementById("winner-video").src = nextRound[0].src;
+    document.getElementById("winner-message").innerHTML = `<h2>${nextRound[0].name} ha sido el ganador 🏆</h2>`;
+    
+    // Mostrar la tabla de clasificación
+    document.getElementById("ranking-container").style.display = "block";
 
-      document.getElementById("winner-name").innerHTML = `<h2>${nextRound[0].name} ha sido el ganador 🏆</h2>`;
+    let rankingList = document.getElementById("ranking-list");
+    rankingList.innerHTML = "";
+    rankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
+    rankingList.innerHTML += `<li>🥈 ${eliminatedVideos[0].name}</li>`;
+    rankingList.innerHTML += `<li>🥉 ${eliminatedVideos[1].name}</li>`;
 
+    let rankPositions = ["4", "5-8", "9-16", "17-32", "33-64", "65-128"];
+    let positionIndex = 1;
+    let currentGroupSize = 4;
 
-        let rankingList = document.getElementById("ranking-list");
-        rankingList.innerHTML = "";
-        rankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
-        rankingList.innerHTML += `<li>🥈 ${ranking[0].name}</li>`;
-        rankingList.innerHTML += `<li>🥉 ${ranking[1].name}</li>`;
-
-        let rankPositions = ["4", "5-8", "9-16", "17-32", "33-64", "65-128"];
-        let positionIndex = 1;
-        let currentGroupSize = 4;
-
-        eliminatedVideos.reverse().forEach((video, index) => {
-            if (index >= currentGroupSize) {
-                positionIndex++;
-                currentGroupSize *= 2;
-            }
-            rankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
-        });
+    eliminatedVideos.reverse().forEach((video, index) => {
+        if (index >= currentGroupSize) {
+            positionIndex++;
+            currentGroupSize *= 2;
+        }
+        rankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
+    });
+}
 
         document.getElementById("ranking-container").style.display = "block";
     }
@@ -495,4 +500,3 @@
 </script>
 </body>
 </html>
-
