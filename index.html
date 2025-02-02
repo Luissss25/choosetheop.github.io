@@ -362,26 +362,9 @@
             return { iframe, button };
         }
 
-        function advance(winner) {
-            nextRound.push(winner);
-            currentMatchIndex++;
-            if (currentMatchIndex >= currentRound.length / 2) {
-                currentMatchIndex = 0;
-                if (bracket.length > 0) {
-                    currentRound = [...nextRound];
-                    nextRound = [];
-                    bracket.shift();
-                    showNextMatch();
-                } else {
-                  showWinner();
-                }
-            } else {
-                showNextMatch();
-            }
-        }
+    
     </script>
-</body>
-</html>
+
 
 <div id="winner-container" class="winner-container">
     <h2>🏆 Ganador del Torneo 🏆</h2>
@@ -394,43 +377,33 @@
     <h2>Clasificación Final</h2>
     <ol id="ranking-list"></ol>
 </div>
-</body>
-</html>
+
 
 <script>
     let eliminatedVideos = [];
     let thirdPlaceMatch = [];
 
-    function advance(winner) {
-        if (currentRound.length === 4 && nextRound.length === 0) {
-            thirdPlaceMatch = [currentRound[2], currentRound[3]];
-        }
-        nextRound.push(winner);
-        eliminatedVideos.push(currentRound[currentMatchIndex * 2 + (winner === currentRound[currentMatchIndex * 2] ? 1 : 0)]);
-        currentMatchIndex++;
-        if (currentMatchIndex >= currentRound.length / 2) {
-            currentMatchIndex = 0;
-            if (bracket.length > 0) {
-                currentRound = [...nextRound];
-                nextRound = [];
-                bracket.shift();
-                if (bracket.length === 0) {
-                    showThirdPlaceMatch();
-                       } else {
-            showNextMatch();
-        }
+   function advance(winner) {
+    if (currentRound.length === 4 && nextRound.length === 0) {
+        thirdPlaceMatch = [currentRound[2], currentRound[3]];
     }
+    nextRound.push(winner);
+    currentMatchIndex++;
+    if (currentMatchIndex >= currentRound.length / 2) {
+        currentMatchIndex = 0;
+        if (bracket.length > 0) {
+            currentRound = [...nextRound];
+            nextRound = [];
+            bracket.shift();
+            showNextMatch();
+        } else {
+            showWinner(winner);  // Asegúrate de pasar el ganador como argumento
+        }
+    } else {
+        showNextMatch();
+    }
+}
 
-        } else {
-            showNextMatch();
-        }
-            } else {
-                showThirdPlaceMatch();
-            }
-        } else {
-            showNextMatch();
-        }
-    }
 
  function showThirdPlaceMatch() {
     if (thirdPlaceMatch.length > 0) {
@@ -466,15 +439,14 @@
 }
 
 
-    function showWinner() {
+   function showWinner(winner) {
     document.getElementById("bracket-container").style.display = "none";
     document.getElementById("winner-container").style.display = "flex";
-    document.getElementById("winner-video").src = nextRound[0].src;
-    document.getElementById("winner-message").innerHTML = `<h2>${nextRound[0].name} ha sido el ganador 🏆</h2>`;
-    
-    // Mostrar la tabla de clasificación
+    document.getElementById("winner-video").src = winner.src;
+    document.getElementById("winner-message").innerHTML = `<h2>${winner.name} ha sido el ganador 🏆</h2>`;
+  // Mostrar la tabla de clasificación
     document.getElementById("ranking-container").style.display = "block";
-
+}
     let rankingList = document.getElementById("ranking-list");
     rankingList.innerHTML = "";
     rankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
@@ -492,11 +464,15 @@
         }
         rankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
     });
-}
-
         document.getElementById("ranking-container").style.display = "block";
-    }
-    }
-</script>
+  
+  </script> 
+  <div id="winner-container" class="winner-container">
+    <h2>🏆 Ganador del Torneo 🏆</h2>
+    <iframe id="winner-video" width="80%" height="500" frameborder="0" allowfullscreen></iframe>
+    <h3 id="winner-message"></h3>
+</div>
+
+
 </body>
 </html>
