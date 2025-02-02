@@ -373,11 +373,6 @@
 </div>
 
 
-<div id="ranking-container" class="ranking-container">
-    <h2>Clasificación Final</h2>
-    <ol id="ranking-list"></ol>
-</div>
-
 
 <script>
     let eliminatedVideos = [];
@@ -447,25 +442,7 @@
   // Mostrar la tabla de clasificación
     document.getElementById("ranking-container").style.display = "block";
 }
-    let rankingList = document.getElementById("ranking-list");
-    rankingList.innerHTML = "";
-    rankingList.innerHTML += `<li>🥇 ${nextRound[0].name}</li>`;
-    rankingList.innerHTML += `<li>🥈 ${eliminatedVideos[0].name}</li>`;
-    rankingList.innerHTML += `<li>🥉 ${eliminatedVideos[1].name}</li>`;
-
-    let rankPositions = ["4", "5-8", "9-16", "17-32", "33-64", "65-128"];
-    let positionIndex = 1;
-    let currentGroupSize = 4;
-
-    eliminatedVideos.reverse().forEach((video, index) => {
-        if (index >= currentGroupSize) {
-            positionIndex++;
-            currentGroupSize *= 2;
-        }
-        rankingList.innerHTML += `<li>${rankPositions[positionIndex]} ${video.name}</li>`;
-    });
-        document.getElementById("ranking-container").style.display = "block";
-  
+    l
   </script> 
   <div id="winner-container" class="winner-container">
     <h2>🏆 Ganador del Torneo 🏆</h2>
